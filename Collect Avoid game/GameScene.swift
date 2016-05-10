@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
-        
+        self.backgroundColor = UIColor.blackColor()
     }
    
     override func update(currentTime: CFTimeInterval) {
