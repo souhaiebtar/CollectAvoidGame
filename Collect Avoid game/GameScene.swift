@@ -33,6 +33,9 @@ class GameScene: SKScene {
         spawnCircleAvoid()
         spawnStars()
         
+        squareSpawnTimer()
+        circleSpawnTimer()
+        starsSpawnTimer()
     }
    
     override func update(currentTime: CFTimeInterval) {
@@ -91,12 +94,13 @@ class GameScene: SKScene {
     }
     
     func spawnStars(){
-        var randomSize = Int(arc4random_uniform(8)+1)
+        var randomSize = Int(arc4random_uniform(3)+1)
         
         let randomSpeed : Double = Double(arc4random_uniform(2) + 1)
         
         stars = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: randomSize, height: randomSize))
-        stars?.position = CGPoint(x: self.frame.midX, y: 500)
+        //stars?.position = CGPoint(x: self.frame.midX, y: 500)//working
+        stars?.position = CGPoint(x: Int(arc4random_uniform(700) + 300), y: 800)
         stars?.zPosition = -1
         
         var moveForward = SKAction.moveToY(-100, duration: randomSpeed )
@@ -109,5 +113,40 @@ class GameScene: SKScene {
 
     }
     
+    func squareSpawnTimer(){
+        //let squareSpawnTime : Double = Double(arc4random_uniform(1))
+
+        let squareTimer = SKAction.waitForDuration(1.0)
+        let spawn = SKAction.runBlock{
+            self.spawnSquareCollect()
+        }
+        
+        let sequence = SKAction.sequence([squareTimer, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+    }
+    
+    func circleSpawnTimer(){
+        //let circleSpawnTime : Double = Double(arc4random_uniform(1))
+        
+        let circleTimer = SKAction.waitForDuration(0.5)
+        let spawn = SKAction.runBlock{
+            self.spawnCircleAvoid()
+        }
+        
+        let sequence = SKAction.sequence([circleTimer, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+    }
+    
+    func starsSpawnTimer(){
+        //let starSpawnTime : Double = Double(arc4random_uniform(1))
+        
+        let starTimer = SKAction.waitForDuration(0.05)
+        let spawn = SKAction.runBlock{
+            self.spawnStars()
+        }
+        
+        let sequence = SKAction.sequence([starTimer, spawn])
+        self.runAction(SKAction.repeatActionForever(sequence))
+    }
     
 }
