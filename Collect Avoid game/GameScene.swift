@@ -92,11 +92,14 @@ class GameScene: SKScene {
     
     func spawnStars(){
         var randomSize = Int(arc4random_uniform(8)+1)
+        
+        let randomSpeed : Double = Double(arc4random_uniform(2) + 1)
+        
         stars = SKSpriteNode(color: UIColor.whiteColor(), size: CGSize(width: randomSize, height: randomSize))
         stars?.position = CGPoint(x: self.frame.midX, y: 500)
         stars?.zPosition = -1
         
-        var moveForward = SKAction.moveToY(-100, duration: circleSpeed)
+        var moveForward = SKAction.moveToY(-100, duration: randomSpeed )
         let destroy = SKAction.removeFromParent()
         
         stars?.runAction(SKAction.sequence([moveForward, destroy]))
