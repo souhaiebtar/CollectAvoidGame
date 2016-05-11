@@ -13,11 +13,18 @@ var squareCollect = SKSpriteNode?()
 var circleAvoid = SKShapeNode?()
 var stars = SKSpriteNode?()
 
+var lblScore = SKLabelNode?()
+var lblMain = SKLabelNode?()
+
+
 var squareSpeed = 1.5
 var circleSpeed = 2.0
 
 var isAlive = true
 
+var score = 0
+
+var HUDColor = UIColor.whiteColor()
 
 struct physicsCategory{
     static let player : UInt32 = 1
@@ -38,6 +45,9 @@ class GameScene: SKScene {
         squareSpawnTimer()
         circleSpawnTimer()
         starsSpawnTimer()
+        
+        spawnLblScore()
+        spawnLblMain()
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -47,6 +57,8 @@ class GameScene: SKScene {
             if isAlive == true{
                 
                 player?.position.x = location.x
+                lblScore?.position.x = location.x
+
             }
             if isAlive == false{
                 player?.position.x = -200
@@ -82,7 +94,7 @@ class GameScene: SKScene {
         squareCollect?.physicsBody?.affectedByGravity = false
         squareCollect?.physicsBody?.categoryBitMask = physicsCategory.squareCollect
         squareCollect?.physicsBody?.dynamic = true
-        //squareCollect?.physicsBody?.allowsRotation = false // disable rotation when it collide
+        //squareCollect?.physicsBody?.allowsRotation = false // disable rotation when it collide2
         
         squareCollect?.runAction(SKAction.sequence([moveForward, destroy]))
         self.addChild(squareCollect!)
@@ -165,6 +177,27 @@ class GameScene: SKScene {
         
         let sequence = SKAction.sequence([starTimer, spawn])
         self.runAction(SKAction.repeatActionForever(sequence))
+    }
+    
+    func spawnLblScore(){
+        lblScore = SKLabelNode(fontNamed: "Courier")
+        lblScore?.fontSize = 60
+        lblScore?.fontColor = HUDColor
+        lblScore?.position = CGPoint(x: (player?.position.x)!, y: (player?.position.y)! - 60)
+        
+        lblScore?.text = "\(score)"
+        self.addChild(lblScore!)
+    }
+    
+    func spawnLblMain(){
+        lblMain = SKLabelNode(fontNamed: "Courier")
+        lblMain?.fontSize = 150
+        lblMain?.fontColor = HUDColor
+        lblMain?.position = CGPoint(x: frame.midX, y: frame.midY)
+        
+        lblMain?.text = "Start!"
+        
+        self.addChild(lblMain!)
     }
     
 }
