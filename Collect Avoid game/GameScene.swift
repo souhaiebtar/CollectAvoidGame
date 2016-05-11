@@ -13,8 +13,10 @@ var squareCollect = SKSpriteNode?()
 var circleAvoid = SKShapeNode?()
 var stars = SKSpriteNode?()
 
-var squareSpeed = 0.9
-var circleSpeed = 0.9
+var squareSpeed = 1.5
+var circleSpeed = 2.0
+
+var isAlive = true
 
 
 struct physicsCategory{
@@ -37,9 +39,25 @@ class GameScene: SKScene {
         circleSpawnTimer()
         starsSpawnTimer()
     }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        for touch in touches{
+            let location = touch.locationInNode(self)
+            
+            if isAlive == true{
+                
+                player?.position.x = location.x
+            }
+            if isAlive == false{
+                player?.position.x = -200
+            }
+        }
+    }
    
     override func update(currentTime: CFTimeInterval) {
-        
+        if isAlive == false{
+            player?.position.x = -200
+        }
     }
     
     func spawnPlayer(){
@@ -64,7 +82,7 @@ class GameScene: SKScene {
         squareCollect?.physicsBody?.affectedByGravity = false
         squareCollect?.physicsBody?.categoryBitMask = physicsCategory.squareCollect
         squareCollect?.physicsBody?.dynamic = true
-        
+        //squareCollect?.physicsBody?.allowsRotation = false // disable rotation when it collide
         
         squareCollect?.runAction(SKAction.sequence([moveForward, destroy]))
         self.addChild(squareCollect!)
