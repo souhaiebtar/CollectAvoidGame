@@ -48,6 +48,8 @@ class GameScene: SKScene {
         
         spawnLblScore()
         spawnLblMain()
+        
+        hideLblMain()
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -198,6 +200,15 @@ class GameScene: SKScene {
         lblMain?.text = "Start!"
         
         self.addChild(lblMain!)
+    }
+    
+    func hideLblMain(){
+        let wait = SKAction.waitForDuration(3.0)
+        let setAlpha = SKAction.runBlock{
+            lblMain?.alpha = 0
+        }
+        self.runAction(SKAction.sequence([wait, setAlpha]))
+        
     }
     
 }
